@@ -87,13 +87,13 @@ def setup_action_filter():
 
 class TravisFold(object):
 
-    """Create context for TravisCI folding mechanism. Subclasses object.
+    """Context for TravisCI folding mechanism. Subclasses object.
 
     See: https://blog.travis-ci.com/2013-05-22-improving-build-visibility-log-folds/
     """
 
     def __init__(self, name):
-        """Regiister TravisCI folding section name."""
+        """Register TravisCI folding section name."""
         self.name = name
 
     def __enter__(self):
@@ -107,7 +107,7 @@ class TravisFold(object):
 
 class GitHub(object):
 
-    """Create an interface to the GitHub API."""
+    """Interface for the GitHub API."""
 
     def __init__(self, org, repo, token, browser):
         """Set properties required for communicating with GH API on self."""
@@ -167,7 +167,7 @@ class GitHub(object):
         return resp
 
     def post_comment(self, issue_number, body):
-        """Post comment in appropriate GitHub pull request comments."""
+        """Create or update comment in appropriate GitHub pull request comments."""
         user = self.get(urljoin(self.base_url, "/user")).json()
         issue_comments_url = urljoin(self.base_url, "issues/%s/comments" % issue_number)
         comments = self.get(issue_comments_url).json()
@@ -190,10 +190,9 @@ class GitHub(object):
 
 class GitHubCommentHandler(logging.Handler):
 
-    """Create a specific GitHub pull request comment handler.
+    """GitHub pull request comment handler.
 
-
-""    Subclasses logging.Handler to add ability to post comments to GitHub.
+    Subclasses logging.Handler to add ability to post comments to GitHub.
     """
 
     def __init__(self, github, pull_number):
@@ -219,7 +218,7 @@ class GitHubCommentHandler(logging.Handler):
 
 class Browser(object):
 
-    """Create a base browser class that sets a reference to a GitHub token."""
+    """Base browser class that sets a reference to a GitHub token."""
 
     product = None
 
@@ -230,7 +229,7 @@ class Browser(object):
 
 class Firefox(Browser):
 
-    """Create Firefox-specific interface.
+    """Firefox-specific interface.
 
     Includes installation, webdriver installation, and wptrunner setup methods.
     """
@@ -285,7 +284,7 @@ class Firefox(Browser):
 
 
 class Chrome(Browser):
-    """Create Chrome-specific interface.
+    """Chrome-specific interface.
 
     Includes installation, webdriver installation, and wptrunner setup methods.
     """
@@ -327,7 +326,10 @@ def get(url):
 
 
 def call(*args):
-    """Log terminal command and invoke it as a subprocess."""
+    """Log terminal command, invoke it as a subprocess.
+
+    Returns a bytestring of the subprocess output if no error.
+    """
     logger.debug("%s" % " ".join(args))
     try:
         return subprocess.check_output(args)
@@ -339,7 +341,7 @@ def call(*args):
 
 
 def get_git_cmd(repo_path):
-    """Create an interface for invoking git commands as a subprocess."""
+    """Create an function for invoking git commands as a subprocess."""
     def git(cmd, *args):
         full_cmd = ["git", cmd] + list(args)
         try:
