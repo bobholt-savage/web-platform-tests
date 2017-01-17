@@ -341,7 +341,7 @@ def call(*args):
 
 
 def get_git_cmd(repo_path):
-    """Create an function for invoking git commands as a subprocess."""
+    """Create a function for invoking git commands as a subprocess."""
     def git(cmd, *args):
         full_cmd = ["git", cmd] + list(args)
         try:
